@@ -8,7 +8,7 @@ This software is a Java console application that allows users to manage expenses
 
 The purpose of this software is to strengthen my knowledge of SQL database operations, JDBC connectivity, and relational database design while building a practical expense tracking application.
 
-Software Demo Video:
+[Software Demo Video](https://youtu.be/yY72NirRFJ4)
 
 ## **Relational Database**
 
