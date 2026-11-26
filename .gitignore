@@ -55,3 +55,5 @@ node_modules/
 bin/
 obj/
 dist/
+
+firebase/service-account.json

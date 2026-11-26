@@ -2,17 +2,30 @@ package com.andrew.expensetracker;
 
 import java.util.Scanner;
 
+/**
+ * Expense Tracker application.
+ */
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    static void main() {
+    /**
+     * Application entry point.
+     */
+    static void main() throws Exception {
 
-        DatabaseManager.initializeDatabase();
+        FirebaseConfig.initializeFirebase();
 
-        ExpenseDAO dao = new ExpenseDAO();
+        System.out.println("Expense Tracker Started.");
 
-        seedCategories(dao);
+        FirestoreExpenseDAO dao =
+                new FirestoreExpenseDAO();
+
+//        DatabaseManager.initializeDatabase();
+
+//        ExpenseDAO dao = new ExpenseDAO();
+
+//        seedCategories(dao);
 
         boolean running = true;
 
@@ -28,7 +41,14 @@ public class Main {
 
             System.out.print("Choice: ");
 
-            int choice = Integer.parseInt(scanner.nextLine());
+            String input = scanner.nextLine().trim();
+            int choice;
+            try {
+                choice = Integer.parseInt(input);
+            } catch (NumberFormatException exception) {
+                System.out.println("Invalid choice. Please enter a number from 1 to 6.");
+                continue;
+            }
 
             switch (choice) {
 
@@ -71,7 +91,7 @@ public class Main {
     /**
      * Add expense.
      */
-    private static void addExpense(ExpenseDAO dao) {
+    private static void addExpense(FirestoreExpenseDAO dao) throws Exception {
 
         System.out.print("Description: ");
 
@@ -83,7 +103,7 @@ public class Main {
 
         System.out.print("Category (1-Food, 2-Transport, 3-Entertainment): ");
 
-        int categoryId = Integer.parseInt(scanner.nextLine());
+        String categoryId = scanner.nextLine();
 
         dao.addExpense(description, amount, categoryId);
 
@@ -93,11 +113,11 @@ public class Main {
     /**
      * Update expense.
      */
-    private static void updateExpense(ExpenseDAO dao) {
+    private static void updateExpense(FirestoreExpenseDAO dao) throws Exception {
 
-        System.out.print("Expense ID: ");
+        System.out.print("Document ID (shown by View Expenses): ");
 
-        int id = Integer.parseInt(scanner.nextLine());
+        String documentId = scanner.nextLine();
 
         System.out.print("New Description: ");
 
@@ -107,18 +127,18 @@ public class Main {
 
         double amount = Double.parseDouble(scanner.nextLine());
 
-        dao.updateExpense(id, description, amount);
+        dao.updateExpense(documentId, description, amount);
 
     }
 
     /**
      * Delete expense.
      */
-    private static void deleteExpense(ExpenseDAO dao) {
+    private static void deleteExpense(FirestoreExpenseDAO dao) throws Exception {
 
-        System.out.print("Expense ID: ");
+        System.out.print("Document ID (shown by View Expenses): ");
 
-        int id = Integer.parseInt(scanner.nextLine());
+        String id = scanner.nextLine();
 
         dao.deleteExpense(id);
     }
